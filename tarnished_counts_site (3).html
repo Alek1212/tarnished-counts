@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarnished Count's</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Georgia", serif;
+      background-color: #1a1a1a;
+      color: #e0d8c3;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 2px solid #444;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #c9b37e;
+    }
+    form {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 40px;
+    }
+    textarea, input[type="file"] {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #1a1a1a;
+      color: #e0d8c3;
+      border: 1px solid #444;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    button {
+      background: #c9b37e;
+      color: #1a1a1a;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .story {
+      background: #2a2a2a;
+      border-left: 4px solid #c9b37e;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    .story img {
+      max-width: 100%;
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tarnished Count's</h1>
+    <p>Compartilhe a jornada do seu Maculado</p>
+  </header>
+
+  <form id="story-form">
+    <label for="story">Escreva sua história:</label>
+    <textarea id="story" rows="8" placeholder="A jornada do meu Maculado começou em Limgrave..."></textarea>
+
+    <label for="image">Envie uma imagem (opcional):</label>
+    <input type="file" id="image" accept="image/*">
+
+    <button type="submit">Enviar história</button>
+  </form>
+
+  <section id="story-feed">
+    <!-- Histórias vão aparecer aqui -->
+  </section>
+
+  <script>
+    const form = document.getElementById('story-form');
+    const storyFeed = document.getElementById('story-feed');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const text = document.getElementById('story').value;
+      const imageFile = document.getElementById('image').files[0];
+
+      if (!text.trim()) return;
+
+      const storyDiv = document.createElement('div');
+      storyDiv.className = 'story';
+      storyDiv.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = document.createElement('img');
+          img.src = event.target.result;
+          storyDiv.appendChild(img);
+        };
+        reader.readAsDataURL(imageFile);
+      }
+
+      storyFeed.prepend(storyDiv);
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
